@@ -5,8 +5,9 @@
 	</head>
 	<body>
 		Your name:
-		<input type="text" ng-model="yourname" placeholder="World">
+		<input type="text" ng-model="yourname" placeholder="World"/>
 
-		Hello {{yourname||'World'}}!
+		Hello {{ result= yourname||'World'}}!
+		<input type="label" ng-model="result"/>
 	</body>
 </html>
