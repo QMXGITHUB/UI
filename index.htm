@@ -4,23 +4,25 @@
 	<script src="lib/angular.min.js"></script>
 </head>
 <body>
-	<div ng-app="" ng-init="name='InitName'">
+	<div id = "firstApp" ng-app="defaultApp" ng-init="name='InitName'">
 		<p>name: <input type="text" ng-model="name"/></p>
 		<h1>Hello {{name}} from ng-model</h1>
 		<h1>Hello <span ng-bind="name"></span> from ng-bind</h1>
 		<h1>First AngularJs expression:{{5+5}}</h1>
 	</div>	
-<!-- 	<div ng-app="myApp" ng-controller="myCtr">
+	<div id = "secondApp" ng-app="myApp" ng-controller="myCtr">
 		Name: <input type="text" ng-model="firstName"/><br/>
 		Family Name: <input type="text" ng-model="lastName"/><br/>
 		Full Name: {{firstName + " " + lastName}}
-	</div> keep one ng-app -->
+	</div>
 	<script>
-		var app = angular.module('myApp', []);
-		app.controller('myCtr', function($scope){
+		var myApp = angular.module('myApp', []);
+		var defaultApp = angular.module('defaultApp', []);
+		myApp.controller('myCtr', function($scope){
 			$scope.firstName = "Jone";
 			$scope.lastName = "San";
 		});
+		angular.bootstrap(document.getElementById('secondApp'), ['myApp']);
 	</script>
 </body>
 </html>
