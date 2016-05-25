@@ -155,6 +155,26 @@ describe("DRY any duplicate setup and teardown code", function(){
     })
   });
 
+  describe("beforeAll and afterAll", function() {
+    var definedInSuit;
+
+    beforeAll(function() {
+      definedInSuit = 1;
+    });
+
+    afterAll(function() {
+      definedInSuit = 0;
+    });
+
+    it("sets the initial value of definedInSuit before all specs run", function() {
+      expect(foo).toEqual(1);
+      foo += 1;
+    });
+
+    it("does not reset definedInSuit between specs", function() {
+      expect(foo).toEqual(2);
+    });
+  });
 
 })
 
