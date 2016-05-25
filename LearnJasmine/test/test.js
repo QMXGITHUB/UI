@@ -116,11 +116,30 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(foo).toThrowError(TypeError, "foo bar baz");
     });
   });
-
-
 });
 
+describe("DRY any duplicate setup and teardown code", function(){
 
+  describe("beforeEach and afterEach", function(){
+    var definedInSuit = 0;
+    beforeEach(function(){
+      definedInSuit += 1;
+    });
+    afterEach(function(){
+      definedInSuit = 0;
+    });
+    
+    it("should use variable beforeEach set", function(){
+      expect(definedInSuit).toEqual(1);
+      definedInSuit =37;
+    });
+
+    it("should variable be cleared by afterEach and set by beforeEach", function(){
+      expect(definedInSuit).toEqual(1);
+    });
+  });
+
+})
 
 
 
