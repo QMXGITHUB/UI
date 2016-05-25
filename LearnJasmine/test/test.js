@@ -65,14 +65,25 @@ describe("A suite for value", function() {
   });
 });
 
-describe("variable in same suite different spec", function(){
-  var definedInSuit = true;
+describe("variable in different suite different spec", function(){
+  var definedInSuit = 37;
   it("variable declared in the describe, can be used in any it block", function(){
-      expect(definedInSuit).toBeTruthy();
-      definedInSuit = false;
+      expect(definedInSuit).toBe(37);
+      definedInSuit = 99;
   });
   it("variable will be effect each other when changed by last test", function(){
-      expect(definedInSuit).toBeFalsy();
+      expect(definedInSuit).toBe(99);
+  });
+ describe("nested inside a second describe", function() {
+    var definedInNestSuit;
+
+    beforeEach(function() {
+      definedInNestSuit = 99;
+    });
+
+    it("can reference both scopes as needed", function() {
+      expect(definedInSuit).toEqual(definedInNestSuit);
+    });
   });
 });
 
