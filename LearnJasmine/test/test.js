@@ -76,7 +76,22 @@ describe("variable in same suite different spec", function(){
   });
 });
 
-describe("A suite for function", function() {
+describe("A suite for test function called or not, success or fail", function() {
+
+  describe("A spec using the fail()", function() {
+    var foo = function(x, callBack) {
+      if (x) {
+        callBack();
+      }
+    };
+
+    it("should not call the callBack", function() {
+      foo(false, function() {
+        fail("Callback has been called");
+      });
+    });
+  });
+
   it("The 'toThrow' matcher is for testing if a function throws an exception", function() {
     var foo = function() {
       return 1 + 2;
@@ -100,3 +115,8 @@ describe("A suite for function", function() {
     expect(foo).toThrowError(TypeError, "foo bar baz");
   });
 });
+
+
+
+
+
