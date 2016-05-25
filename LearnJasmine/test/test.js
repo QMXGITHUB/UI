@@ -90,30 +90,34 @@ describe("A suite for test function called or not, success or fail", function() 
         fail("Callback has been called");
       });
     });
+  }); 
+
+  describe("verify function throw exception", function(){
+    it("The 'toThrow' matcher is for testing if a function throws an exception", function() {
+      var foo = function() {
+        return 1 + 2;
+      };
+      var bar = function() {
+        return a + 1;
+      };
+
+      expect(foo).not.toThrow();
+      expect(bar).toThrow();
+    });
+
+    it("The 'toThrowError' matcher is for testing a specific thrown exception", function() {
+      var foo = function() {
+        throw new TypeError("foo bar baz");
+      };
+
+      expect(foo).toThrowError("foo bar baz");
+      expect(foo).toThrowError(/bar/);
+      expect(foo).toThrowError(TypeError);
+      expect(foo).toThrowError(TypeError, "foo bar baz");
+    });
   });
 
-  it("The 'toThrow' matcher is for testing if a function throws an exception", function() {
-    var foo = function() {
-      return 1 + 2;
-    };
-    var bar = function() {
-      return a + 1;
-    };
 
-    expect(foo).not.toThrow();
-    expect(bar).toThrow();
-  });
-
-  it("The 'toThrowError' matcher is for testing a specific thrown exception", function() {
-    var foo = function() {
-      throw new TypeError("foo bar baz");
-    };
-
-    expect(foo).toThrowError("foo bar baz");
-    expect(foo).toThrowError(/bar/);
-    expect(foo).toThrowError(TypeError);
-    expect(foo).toThrowError(TypeError, "foo bar baz");
-  });
 });
 
 
