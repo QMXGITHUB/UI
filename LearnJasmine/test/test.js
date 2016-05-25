@@ -139,6 +139,23 @@ describe("DRY any duplicate setup and teardown code", function(){
     });
   });
 
+  describe("this", function(){
+    beforeEach(function(){
+      this.definedInBeforeEach = 37;
+    });
+    
+    it("share variable through this between beforeEach, it, afterEach", function(){
+      expect(this.definedInBeforeEach).toEqual(37);
+      this.definedInIt = 33;
+    });
+
+    it("not share variable through this between different it", function(){
+      expect(this.definedInBeforeEach).toEqual(37);
+      expect(this.definedInIt).toBeUndefined();
+    })
+  });
+
+
 })
 
 
