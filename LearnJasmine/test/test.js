@@ -127,6 +127,38 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(foo).toThrowError(TypeError, "foo bar baz");
     });
   });
+
+  describe("A spy", function() {
+    var foo, bar = null;
+
+    beforeEach(function() {
+      foo = {
+        setBar: function(value) {
+          bar = value;
+        }
+      };
+    });
+
+    it("tracks that the spy was called", function() {
+      spyOn(foo, 'setBar');
+      foo.setBar(123);
+      expect(foo.setBar).toHaveBeenCalled();
+      expect(foo.setBar).toHaveBeenCalledTimes(1);
+      expect(foo.setBar).toHaveBeenCalledWith(123);
+      expect(bar).toBeNull();
+    });
+
+    it("tracks that the spy was called twice", function() {
+      spyOn(foo, 'setBar');
+      foo.setBar(123);
+      foo.setBar(456, 'another param');
+      expect(foo.setBar).toHaveBeenCalled();
+      expect(foo.setBar).toHaveBeenCalledTimes(2);
+      expect(foo.setBar).toHaveBeenCalledWith(123);
+      expect(foo.setBar).toHaveBeenCalledWith(456, 'another param');
+      expect(bar).toBeNull();
+    });
+  });
 });
 
 describe("DRY any duplicate setup and teardown code", function(){
