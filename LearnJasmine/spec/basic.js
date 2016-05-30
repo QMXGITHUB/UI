@@ -128,7 +128,7 @@ describe("A suite for test function called or not, success or fail", function() 
     });
   });
 
-  describe("A spy without any configure", function() {
+  describe("A spy without any configure but with all track properties", function() {
     var foo, bar = null;
 
     beforeEach(function() {
@@ -139,24 +139,64 @@ describe("A suite for test function called or not, success or fail", function() 
       };
     });
 
-    it("tracks that the spy was called once", function() {
-      spyOn(foo, 'setBar');
-      foo.setBar(123);
-      expect(foo.setBar).toHaveBeenCalled();
-      expect(foo.setBar).toHaveBeenCalledTimes(1);
-      expect(foo.setBar).toHaveBeenCalledWith(123);
-      expect(bar).toBeNull();
-    });
-
     it("tracks that the spy was called twice", function() {
       spyOn(foo, 'setBar');
+      expect(foo.setBar.calls.any()).toEqual(false);
+      expect(foo.setBar.calls.count()).toEqual(0);
+
       foo.setBar(123);
-      foo.setBar(456, 'another param');
       expect(foo.setBar).toHaveBeenCalled();
-      expect(foo.setBar).toHaveBeenCalledTimes(2);
+      expect(foo.setBar.calls.any()).toEqual(true);
+
+      expect(foo.setBar).toHaveBeenCalledTimes(1);
+      expect(foo.setBar.calls.count()).toEqual(1);
+
+
       expect(foo.setBar).toHaveBeenCalledWith(123);
-      expect(foo.setBar).toHaveBeenCalledWith(456, 'another param');
+      expect(foo.setBar.calls.argsFor(0)).toEqual([123]);
+
+      expect(foo.setBar.calls.first()).toEqual({object: foo, args: [123], returnValue: undefined});
+      expect(foo.setBar.calls.all()).toEqual([{object: foo, args: [123], returnValue: undefined}]);
+
       expect(bar).toBeNull();
+
+
+      foo.setBar(456, 'baz');
+      expect(foo.setBar).toHaveBeenCalled();
+      expect(foo.setBar.calls.any()).toBe(true);
+
+      expect(foo.setBar).toHaveBeenCalledTimes(2);
+      expect(foo.setBar.calls.count()).toEqual(2);
+
+      expect(foo.setBar).toHaveBeenCalledWith(123);
+      expect(foo.setBar.calls.argsFor(0)).toEqual([123]);
+
+      expect(foo.setBar).toHaveBeenCalledWith(456, 'baz');
+      expect(foo.setBar.calls.argsFor(1)).toEqual([456, "baz"]);
+
+      expect(foo.setBar.calls.mostRecent()).toEqual({object: foo, args: [456, "baz"], returnValue: undefined});
+      expect(foo.setBar.calls.allArgs()).toEqual([[123],[456, "baz"]]);
+
+      expect(bar).toBeNull();
+
+
+      foo.setBar.calls.reset();
+      expect(foo.setBar.calls.any()).toBe(false);
+    });
+
+    it("tracks the context of spy called", function() {
+      spyOn(foo, "setBar");
+      var baz = {
+        fn: foo.setBar
+      };
+      var quux = {
+        fn: foo.setBar
+      };
+      baz.fn(123);
+      quux.fn(456);
+
+      expect(foo.setBar.calls.first().object).toBe(baz);
+      expect(foo.setBar.calls.mostRecent().object).toBe(quux);
     });
   });
 
@@ -245,9 +285,6 @@ describe("A suite for test function called or not, success or fail", function() 
       foo.setBar(123);
       expect(bar).toBe(null);
     });
-
-
-
   });
 
 
