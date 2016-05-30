@@ -103,6 +103,7 @@ describe("A suite for test function called or not, success or fail", function() 
   }); 
 
   describe("verify function throw exception", function(){
+
     it("The 'toThrow' matcher is for testing if a function throws an exception", function() {
       var foo = function() {
         return 1 + 2;
@@ -217,10 +218,12 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(v).toEqual(1001);
     });
 
-    
+    it("when configured to throw an error", function() {
+      spyOn(foo, "setBar").and.throwError("quux");
+      expect(function(){foo.setBar(123)}).toThrowError("quux");
+    });
+
   });
-
-
 
 
 
