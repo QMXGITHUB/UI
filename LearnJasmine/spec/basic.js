@@ -286,11 +286,42 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(bar).toBe(null);
     });
   });
+});
 
+describe("created manually", function() {
 
+  it("only a spy", function() {
+    var whatAmI = jasmine.createSpy('IamQ');
+    whatAmI("I", "am", "a", "spy");
 
+    expect(whatAmI.and.identity()).toEqual('IamQ');
+    expect(whatAmI).toHaveBeenCalled();
+    expect(whatAmI.calls.count()).toEqual(1);
+    expect(whatAmI).toHaveBeenCalledWith("I", "am", "a", "spy");
+    expect(whatAmI.calls.mostRecent().args[0]).toEqual("I");
+  });
+
+  it("Multiple spies", function() {
+    var tape = jasmine.createSpyObj('tape', ['play', 'pause', 'stop', 'rewind']);
+
+    tape.play();
+    tape.pause();
+    tape.rewind(0);
+    expect(tape.play).toBeDefined();
+    expect(tape.pause).toBeDefined();
+    expect(tape.stop).toBeDefined();
+    expect(tape.rewind).toBeDefined();
+
+    expect(tape.play).toHaveBeenCalled();
+    expect(tape.pause).toHaveBeenCalled();
+    expect(tape.rewind).toHaveBeenCalled();
+    expect(tape.stop).not.toHaveBeenCalled();
+  });
 
 });
+
+
+
 
 describe("DRY(prepare before) any duplicate setup and teardown code", function(){
 
