@@ -1,17 +1,14 @@
 describe("A suite for value", function() {
-  it(“The ‘toBe’ matcher compares with ‘===' ", function() {
+
+  it("The ‘toBe’ matcher compares with ‘===' ", function() {
     expect(true).toBe(true);
   });
 
-  it(“variables declared in describe are available to any it block inside the suite", function() {
-    expect(a).toBe(true);
-  });
-
-  it(“chaining the call to ‘expect' with a ‘not' before calling the matcher", function() {
+  it("chaining the call to ‘expect' with a ‘not' before calling the matcher", function() {
     expect(false).not.toBe(true);
   });
 
-  it(“toEqual should work for object", function() {
+  it("toEqual should work for object", function() {
       var foo = {
         a: 12,
         b: 34
@@ -32,14 +29,16 @@ describe("A suite for value", function() {
 
   });
 
-  it("The ‘toBeDefined’, ’toBeUndefined’, ’toBeNull' matcher", function() {
-    var a = 1;
-    expect(a).toBeDefined();
-    expect(b).toBeUndefined();
+  it("The 'toBeDefined’, 'toBeUndefined', 'toBeNull' matcher", function() {
+    var a = {
+      foo: "foo"
+    };
+    expect(a.foo).toBeDefined();
+    expect(a.bar).toBeUndefined();
     expect(null).toBeNull();
   });
 
-  it("The ‘toBeTruthy’, ’toBeFalsy' matcher are for boolean casting testing", function() {
+  it("The 'toBeTruthy', 'toBeFalsy' matcher are for boolean casting testing", function() {
     expect(true).toBeTruthy();
     expect(false).toBeFalsy();
   });
@@ -52,7 +51,7 @@ describe("A suite for value", function() {
 
   });
 
-  it("The ‘toBeLessThan’, ’toBeGreaterThan' matcher are for mathematical comparisons", function() {
+  it("The 'toBeLessThan', 'toBeGreaterThan' matcher are for mathematical comparisons", function() {
     var pi = 3.1415926, e = 2.78;
     expect(e).toBeLessThan(pi);
     expect(pi).toBeGreaterThan(e);
@@ -161,7 +160,7 @@ describe("A suite for test function called or not, success or fail", function() 
   });
 });
 
-describe("DRY any duplicate setup and teardown code", function(){
+describe("DRY(prepare before) any duplicate setup and teardown code", function(){
 
   describe("beforeEach and afterEach", function(){
     var definedInSuit = 0;
@@ -210,12 +209,12 @@ describe("DRY any duplicate setup and teardown code", function(){
     });
 
     it("sets the initial value of definedInSuit before all specs run", function() {
-      expect(foo).toEqual(1);
-      foo += 1;
+      expect(definedInSuit).toEqual(1);
+      definedInSuit += 1;
     });
 
     it("does not reset definedInSuit between specs", function() {
-      expect(foo).toEqual(2);
+      expect(definedInSuit).toEqual(2);
     });
   });
 })
