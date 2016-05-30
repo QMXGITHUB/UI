@@ -164,6 +164,7 @@ describe("A suite for test function called or not, success or fail", function() 
     var foo, bar;
 
     beforeEach(function() {
+      bar = undefined;
       foo = {
         setBar: function(value) {
           bar = value;
@@ -222,6 +223,30 @@ describe("A suite for test function called or not, success or fail", function() 
       spyOn(foo, "setBar").and.throwError("quux");
       expect(function(){foo.setBar(123)}).toThrowError("quux");
     });
+
+    it("when configured with stub using call through before", function() {
+      spyOn(foo, 'setBar').and.callThrough();//must be, before stub
+      foo.setBar(123);
+      expect(bar).toEqual(123);
+
+      foo.setBar.and.stub();
+      bar = null;
+ 
+      foo.setBar(123);
+      expect(bar).toBe(null);
+    });
+
+    it("when configured with stub using call before", function() {
+      spyOn(foo, 'setBar');//must be, before stub
+      expect(bar).toBeUndefined();
+      foo.setBar.and.stub();
+      bar = null;
+
+      foo.setBar(123);
+      expect(bar).toBe(null);
+    });
+
+
 
   });
 
