@@ -190,7 +190,25 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(bar).toEqual(123);
       expect(v).toEqual(745);
     });
+
+    it("when it return a series of values", function() {
+      spyOn(foo, "getBar").and.returnValues("fetched first", "fetched second");
+
+      foo.setBar(123);
+      var v1 = foo.getBar(123);
+      var v2 = foo.getBar(123);
+      var v3 = foo.getBar(123);
+      expect(foo.getBar).toHaveBeenCalled();
+      expect(bar).toEqual(123);
+      expect(v1).toEqual("fetched first");
+      expect(v2).toEqual("fetched second");
+      expect(v3).toBeUndefined();
+    });
   });
+
+
+
+
 
 });
 
