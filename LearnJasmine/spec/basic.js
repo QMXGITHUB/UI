@@ -160,7 +160,7 @@ describe("A suite for test function called or not, success or fail", function() 
   });
 
   describe("A spy with configured", function() {
-    var foo, bar, fetchedBar;
+    var foo, bar;
 
     beforeEach(function() {
       foo = {
@@ -178,10 +178,18 @@ describe("A suite for test function called or not, success or fail", function() 
       foo.setBar(123);
       var v = foo.getBar();
       expect(foo.getBar).toHaveBeenCalled();
-      expect(v).toBe(123);
       expect(bar).toEqual(123);
+      expect(v).toBe(123);
     });
 
+    it("when it is return value", function() {
+      spyOn(foo, "getBar").and.returnValue(745);
+      foo.setBar(123);
+      var v = foo.getBar();
+      expect(foo.getBar).toHaveBeenCalled();
+      expect(bar).toEqual(123);
+      expect(v).toEqual(745);
+    });
   });
 
 });
