@@ -127,7 +127,7 @@ describe("A suite for test function called or not, success or fail", function() 
     });
   });
 
-  describe("A spy", function() {
+  describe("A spy without any configure", function() {
     var foo, bar = null;
 
     beforeEach(function() {
@@ -138,7 +138,7 @@ describe("A suite for test function called or not, success or fail", function() 
       };
     });
 
-    it("tracks that the spy was called", function() {
+    it("tracks that the spy was called once", function() {
       spyOn(foo, 'setBar');
       foo.setBar(123);
       expect(foo.setBar).toHaveBeenCalled();
@@ -158,6 +158,32 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(bar).toBeNull();
     });
   });
+
+  describe("A spy with configured", function() {
+    var foo, bar, fetchedBar;
+
+    beforeEach(function() {
+      foo = {
+        setBar: function(value) {
+          bar = value;
+        },
+        getBar: function() {
+          return bar;
+        }
+      };
+    });
+
+    it("when it is call through", function() {
+      spyOn(foo, 'getBar').and.callThrough();
+      foo.setBar(123);
+      var v = foo.getBar();
+      expect(foo.getBar).toHaveBeenCalled();
+      expect(v).toBe(123);
+      expect(bar).toEqual(123);
+    });
+
+  });
+
 });
 
 describe("DRY(prepare before) any duplicate setup and teardown code", function(){
