@@ -204,7 +204,22 @@ describe("A suite for test function called or not, success or fail", function() 
       expect(v2).toEqual("fetched second");
       expect(v3).toBeUndefined();
     });
+
+    it("when configured with an alternate implementation", function() {
+      spyOn(foo, "getBar").and.callFake(function() {
+        return 1001;
+      });
+
+      foo.setBar(123);
+      var v = foo.getBar();
+      expect(foo.getBar).toHaveBeenCalled();
+      expect(bar).toEqual(123);
+      expect(v).toEqual(1001);
+    });
+
+    
   });
+
 
 
 
