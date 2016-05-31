@@ -288,7 +288,7 @@ describe("A suite for test function called or not, success or fail", function() 
   });
 });
 
-describe("created manually", function() {
+describe("spy created manually", function() {
 
   it("only a spy", function() {
     var whatAmI = jasmine.createSpy('IamQ');
@@ -317,11 +317,7 @@ describe("created manually", function() {
     expect(tape.rewind).toHaveBeenCalled();
     expect(tape.stop).not.toHaveBeenCalled();
   });
-
 });
-
-
-
 
 describe("DRY(prepare before) any duplicate setup and teardown code", function(){
 
@@ -400,3 +396,25 @@ describe("Pending specs", function() {
     });
   });
 });
+
+describe("match any", function() {
+  it("matches any value", function() {
+    expect({}).toEqual(jasmine.any(Object));
+    expect(12).toEqual(jasmine.any(Number));
+    expect(1).toEqual(jasmine.anything());
+
+  });
+
+  describe("matches with func parameter", function() {
+    it("is useful for comparing arguments", function() {
+      var foo = jasmine.createSpy('foo');
+      foo(12, function() {
+        return true;
+      });
+
+      expect(foo).toHaveBeenCalledWith(jasmine.any(Number), jasmine.any(Function));
+      expect(foo).toHaveBeenCalledWith(12, jasmine.anything());
+    });
+  });
+});
+
