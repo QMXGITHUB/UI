@@ -497,3 +497,16 @@ describe('jasmine.stringMatching', function() {
     });
   });
 });
+
+describe("over write toEqual", function() {
+
+  it("custom asymmetry dives in deep", function() {
+    var tester = {
+      asymmetricMatch: function(actual) {
+        var secondValue = actual.split(',')[1];
+        return secondValue === 'bar';
+      }
+    };
+    expect("foo,bar,baz,quux").toEqual(tester);
+  });
+});
