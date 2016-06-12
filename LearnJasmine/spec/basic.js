@@ -571,6 +571,38 @@ describe("Manually ticking the Jasmine Clock", function() {
   });
 });
 
+describe("Asynchronous specs", function(){
+  var value = 10;
+  beforeEach(function(done){
+    setTimeout(function(){
+      value = 0;
+      done();
+    }, 4000);
+  });
 
+  it("should support async execution of test preparation and expectations", function(done){
+    expect(value).toBe(0);
+    value++;
+    expect(value).toBe(1);
+    done()
+  });
+});
+
+describe("Asynchronous specs", function(){
+  var value = 10;
+  beforeEach(function(done){
+    setTimeout(function(){
+      value = 0;
+      done();
+    }, 6000);
+  });
+
+  it("should support async execution of test preparation and expectations", function(done){
+    expect(value).toBe(10);
+    value++;
+    expect(value).toBe(11);
+    done()
+  });
+});
 
 
