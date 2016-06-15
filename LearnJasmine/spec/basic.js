@@ -64,7 +64,7 @@ describe("A suite for value", function() {
   });
 });
 
-describe("variable in different suite different spec", function(){
+describe("The life cycle of variable in different suite different spec", function(){
   var definedInSuit = 37;
   it("variable declared in the describe, can be used in any it block", function(){
       expect(definedInSuit).toBe(37);
@@ -571,14 +571,14 @@ describe("Manually ticking the Jasmine Clock", function() {
   });
 });
 
-fdescribe("Asynchronous specs", function(){
+describe("Asynchronous specs", function(){
 
-  describe("only run specs after done has been finished", function(){
+  describe("run specs after done has been finished", function(){
     var value = 10;
     beforeEach(function(done){
       setTimeout(function(){
         value = 0;
-        done();
+        done();//comment this line and try
       }, 4000);
     });
 
@@ -599,7 +599,7 @@ fdescribe("Asynchronous specs", function(){
       }, 6000);
     });
 
-    it("should support async execution of test preparation and expectations", function(done){
+    it("throw timeout exception and run the specs", function(done){
       expect(value).toBe(10);
       value++;
       expect(value).toBe(11);
@@ -622,4 +622,70 @@ fdescribe("Asynchronous specs", function(){
   });
 });
 
+describe("A spec using done.fail", function() {
+  var foo = function(x, callBack1, callBack2) {
+    if (x) {
+      setTimeout(callBack1, 0);
+    } else {
+      setTimeout(callBack2, 0);
+    }
+  };
 
+  it("should not call the second callBack", function(done) {
+    foo(true,
+      done,
+      function() {
+        done.fail("Second callback has been called");
+      }
+    );
+  });
+});
+
+describe("Define own custom matcher", function(){
+  beforeEach(function(){
+    var customMatchers = {
+      toBeGoofy: function(util, customEqualityTesters) {
+        return {
+          compare: function(actual, expected) {
+            if (expected === undefined) {
+              expected = '';
+            }
+            var result = {};
+            result.pass = util.equals(actual.hyuk, "gawrsh" + expected, customEqualityTesters);
+            if (result.pass) {
+              result.message = "Expected " + actual + " not to be quite so goofy";
+            } else {
+              result.message = "Expected " + actual + " to be goofy, but it was not very goofy";
+            }
+            return result;
+          }
+        };
+      }
+    };
+
+  });
+  describe("Custom matcher: 'toBeGoofy'", function() {
+    beforeEach(function() {
+      jasmine.addMatchers(customMatchers);
+    });
+
+    it("is available on an expectation", function() {
+      expect({
+        hyuk: 'gawrsh'
+      }).toBeGoofy();
+    });
+     it("can take an 'expected' parameter", function() {
+    expect({
+      hyuk: 'gawrsh is fun'
+    }).toBeGoofy(' is fun');
+  });
+
+  it("can be negated", function() {
+    expect({
+        hyuk: 'this is fun'
+      }).not.toBeGoofy();
+    });
+  });
+
+
+});
