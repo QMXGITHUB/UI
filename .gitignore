@@ -3,3 +3,4 @@ style/.sass-cache/*
 style/style.css
 style/*.css.map
 .sass-cache/*
+node_modules/*
